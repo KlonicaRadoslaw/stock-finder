@@ -1,9 +1,17 @@
 import React from 'react'
 import "./Card.css";
 
-type Props = {}
+interface Props {
+    companyName: string;
+    ticker: string;
+    price: number;
+}
 
-const Card = (props: Props) => {
+const Card: React.FC<Props> = ({
+    companyName, 
+    ticker, 
+    price
+}: Props) : JSX.Element => {
   return (
     <div className='card'>
         <img
@@ -11,8 +19,8 @@ const Card = (props: Props) => {
             alt="Image"
         />
         <div className='details'>
-            <h2>AAPL</h2>
-            <p>$111</p>
+            <h2>{companyName} ({ticker})</h2>
+            <p>${price}</p>
         </div>
         <p className='info'>
         Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
