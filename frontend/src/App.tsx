@@ -9,7 +9,7 @@ function App() {
 
   const [search,setSearch] = useState<string>("");
   const [searchResult, setSearchResult] = useState<CompanySearch[]>([]);
-  const [serverError, setServerError] = useState<string>("");
+  const [serverError, setServerError] = useState<string | null>(null);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -29,7 +29,8 @@ function App() {
   return (
     <div className="App">
       <Search onClick={onClick} search={search} handleChange={handleChange} />
-      <CardList />
+      {serverError && <h1>{serverError}</h1>}
+      <CardList searchResult={searchResult}/>
     </div>
   );
 }
