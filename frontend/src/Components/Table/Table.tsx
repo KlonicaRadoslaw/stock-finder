@@ -9,7 +9,7 @@ type Company = (typeof data)[0];
 const configs = [
   {
     label: "Year",
-    render: (company: Company) => company.acceptedDate
+    render: (company: Company) => company.calendarYear
   },
   {
     label: "Cost of Revenue",
