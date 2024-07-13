@@ -3,6 +3,7 @@ import { CompanyCashFlow } from '../../company';
 import { useOutletContext } from 'react-router';
 import { getCashFlowStatenet } from '../../api';
 import Table from '../Table/Table';
+import Spinner from '../Spinner/Spinner';
 
 interface Props { }
 
@@ -60,7 +61,7 @@ const CashFlowStatement = (props: Props) => {
                     <Table config={config} data={cashFlowData} />
                 </>
             ) : (
-                <h1>No results!</h1>
+                <Spinner />
             )}
         </div>
     )
