@@ -42,11 +42,33 @@ namespace backend.Controllers
 
         public async Task<IActionResult> Create([FromRoute] int stockId, [FromBody] CreateCommentDto commentDto)
         {
-            if(!await _stockRepository.StockExists(stockId)) return BadRequest("Stock does not exists");
+            if(!await _stockRepository.StockExists(stockId)) return BadRequest("Stock does not exist");
 
             var commentModel = commentDto.ToCommentFromCreate(stockId);
             await _commentRepository.CreateAsync(commentModel);
-            return CreatedAtAction(nameof(GetById), new { id = commentModel }, commentModel.ToCommentDto());
+            return CreatedAtAction(nameof(GetById), new { id = commentModel.Id }, commentModel.ToCommentDto());
+        }
+
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateCommentRequestDto updateDto)
+        {
+            var comment = await _commentRepository.UpdateAsync(id, updateDto.ToCommentFromUpdate());
+
+            if (comment == null) return NotFound("Comment not found");
+
+            return Ok(comment.ToCommentDto());
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            var commentModel = await _commentRepository.DeleteAsync(id);
+
+            if (commentModel == null) return NotFound("Comment does not exist");
+
+            return Ok(commentModel);
         }
     }
 }
