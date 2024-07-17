@@ -12,6 +12,14 @@ namespace backend.Repositories
         {
             _context = context;
         }
+
+        public async Task<Comment> CreateAsync(Comment commentModel)
+        {
+            await _context.AddAsync(commentModel);
+            await _context.SaveChangesAsync();
+            return commentModel;
+        }
+
         public async Task<List<Comment>> GetAllAsync()
         {
             return await _context.Comments.ToListAsync();
