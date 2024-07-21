@@ -3,6 +3,9 @@ using backend.Mappers;
 using Microsoft.AspNetCore.Mvc;
 using backend.Dtos;
 using backend.Dtos.Comment;
+using Microsoft.AspNetCore.Identity;
+using backend.Models;
+using backend.Extensions;
 
 namespace backend.Controllers
 {
@@ -12,16 +15,18 @@ namespace backend.Controllers
     {
         private readonly ICommentRepository _commentRepository;
         private readonly IStockRepository _stockRepository;
-        public CommentController(ICommentRepository commentRepository, IStockRepository stockRepository)
+        private readonly UserManager<AppUser> _userManager;
+        public CommentController(ICommentRepository commentRepository, IStockRepository stockRepository, UserManager<AppUser> userManager)
         {
             _commentRepository = commentRepository;
             _stockRepository = stockRepository;
+            _userManager = userManager;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            if(!ModelState.IsValid) 
+            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             var comments = await _commentRepository.GetAllAsync();
@@ -39,7 +44,7 @@ namespace backend.Controllers
 
             var comment = await _commentRepository.GetByIdAsync(id);
 
-            if(comment == null) return NotFound();
+            if (comment == null) return NotFound();
 
             return Ok(comment.ToCommentDto());
         }
@@ -51,9 +56,14 @@ namespace backend.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (!await _stockRepository.StockExists(stockId)) return BadRequest("Stock does not exist");
+            if (!await _stockRepository.StockExists(stockId))
+                return BadRequest("Stock does not exist");
+
+            var username = User.GetUsername();
+            var appuser = await _userManager.FindByNameAsync(username);
 
             var commentModel = commentDto.ToCommentFromCreate(stockId);
+            commentModel.AppUserId = appuser.Id;
 
             await _commentRepository.CreateAsync(commentModel);
 
