@@ -6,6 +6,8 @@ using backend.Dtos.Comment;
 using Microsoft.AspNetCore.Identity;
 using backend.Models;
 using backend.Extensions;
+using backend.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace backend.Controllers
 {
@@ -29,12 +31,13 @@ namespace backend.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        [Authorize]
+        public async Task<IActionResult> GetAll([FromQuery]CommentQueryObject queryObject)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var comments = await _commentRepository.GetAllAsync();
+            var comments = await _commentRepository.GetAllAsync(queryObject);
 
             var commentDto = comments.Select(s => s.ToCommentDto());
 
