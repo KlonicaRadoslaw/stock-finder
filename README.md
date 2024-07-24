@@ -72,13 +72,13 @@ Once both the backend and frontend servers are running, open your browser and na
 ![Home Page](screenshots/home.png)
 
 ### Search Page
-![Search Page](screenshots/search.png)
+![Search Page](screenshots/search.PNG)
 
 ### Company Page
-![Company Page](screenshots/company.png)
+![Company Page](screenshots/company.PNG)
 
 ### Portfolio Page
-![Portfolio Page](screenshots/portfolio.png)
+![Portfolio Page](screenshots/portfolio.PNG)
 
 ## Contributing
 
